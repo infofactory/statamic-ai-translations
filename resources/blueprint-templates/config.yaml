@@ -1,0 +1,42 @@
+title: 'statamic-ai-translations::cp.title'
+tabs:
+  main:
+    display: Principale
+    sections:
+      -
+        fields:
+          -
+            handle: provider
+            field:
+              options:
+                -
+                  key: key
+                  value: label
+              type: select
+              display: statamic-ai-translations::cp.item.provider.display
+              localizable: false
+              width: 50
+              instructions: statamic-ai-translations::cp.item.provider.instructions
+              placeholder: statamic-ai-translations::cp.item.provider.placeholder
+              replicator_preview: false
+              required: true
+          -
+            handle: model
+            field:
+              type: text
+              display: statamic-ai-translations::cp.item.model.display
+              localizable: false
+              width: 50
+              instructions: statamic-ai-translations::cp.item.model.instructions
+              placeholder: statamic-ai-translations::cp.item.model.placeholder
+              replicator_preview: false
+              required: true
+          -
+            handle: instructions
+            field:
+              type: textarea
+              display: statamic-ai-translations::cp.item.instructions.display
+              localizable: false
+              instructions: statamic-ai-translations::cp.item.instructions.instructions
+              placeholder: statamic-ai-translations::cp.item.instructions.placeholder
+              replicator_preview: false

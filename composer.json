@@ -1,0 +1,50 @@
+{
+    "name": "infofactory/statamic-ai-translations",
+    "description": "A Statamic addon that lets you translate pages using AI",
+    "type": "statamic-addon",
+    "license": "proprietary",
+    "keywords": [
+        "statamic",
+        "ai",
+        "tools",
+        "i18n",
+        "translations",
+        "multilanguage"
+    ],
+    "authors": [
+        {
+            "name": "Alessio Tognan",
+            "email": "tognan@infofactory.it",
+            "role": "Developer",
+            "homepage": "https://infofactory.it"
+        }
+    ],
+    "homepage": "https://github.com/infofactory/statamic-ai-translations",
+    "require": {
+        "statamic/cms": "^5.0",
+        "prism-php/prism": "^0.98.0",
+        "stillat/proteus": "^4.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Infofactory\\StatamicAiTranslations\\": "src"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "pixelfear/composer-dist-plugin": true
+        },
+        "preferred-install": "dist"
+    },
+    "extra": {
+        "statamic": {
+            "name": "Statamic Ai Translations",
+            "description": "Statamic Ai Translations addon"
+        },
+        "laravel": {
+            "providers": [
+                "Infofactory\\StatamicAiTranslations\\ServiceProvider"
+            ]
+        }
+    }
+}
