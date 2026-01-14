@@ -366,6 +366,11 @@ class Translate extends Action
         // Save the translated content back to the item
         $item->data($itemData);
         $item->save();
+
+        return [
+            'message' => false,
+            'callback' => ['reloadPage'],
+        ];
     }
 
     /**

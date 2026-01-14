@@ -9,11 +9,15 @@ use Statamic\Statamic;
 
 class ServiceProvider extends AddonServiceProvider
 {
+    protected $scripts = [
+        __DIR__.'/../resources/js/ai-translations.js'
+    ];
+
     public function bootAddon()
     {
         // Register permissions
         Permission::register('manage ai-translations config')
-            ->label('Manage Bard AI Configs');
+            ->label('Manage AI Translations Configs');
 
         // Register navigation
         Nav::extend(function ($nav) {
