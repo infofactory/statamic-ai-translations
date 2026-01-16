@@ -366,10 +366,13 @@ class Translate extends Action
         // Get the current data
         $currentData = $item->data()->toArray();
 
+        // Translate the translatable
+        $translatedData = $this->translateFields($originData, $currentData, $translatableFields, $handlesToTranslate, $targetLocaleName);
+
         // Merge existing translations with newly translated content
         $itemData = array_merge(
             $currentData,
-            $this->translateFields($originData, $currentData, $translatableFields, $handlesToTranslate, $targetLocaleName)
+            $translatedData,
         );
 
         // Save the translated content back to the item
