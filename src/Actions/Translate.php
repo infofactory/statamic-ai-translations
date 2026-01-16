@@ -29,9 +29,10 @@ class Translate extends Action
      * Recursively scans through all fields to identify which ones are translatable
      *
      * @param Collection $fields Collection of Field objects to check
+     * @param bool|null $rootIsLocalizable Whether the root field is localizable
      * @return Collection Nested collection of field configurations that can be translated
      */
-    private function getTranslatableFields(Collection $fields): Collection
+    private function getTranslatableFields(Collection $fields, bool | null $rootIsLocalizable = null): Collection
     {
         $fieldsData = collect();
 
@@ -42,14 +43,20 @@ class Translate extends Action
 
         /** @var Field $field */
         foreach ($fields as $field) {
+
+            $isLocalizable = $rootIsLocalizable ?? $field->isLocalizable();
+
             // Handle container fields (grid, group) that can contain other fields
             if ($containerFieldTypes->contains($field->type())) {
                 $fieldConfig = $field->config();
                 $fieldFields = new Fields($fieldConfig['fields']);
-                $fieldsData->put($field->handle(), collect([
-                    'field' => $field,
-                    'fields' => $this->getTranslatableFields($fieldFields->resolveFields()),
-                ]));
+                $containerTranslatableFields = $this->getTranslatableFields($fieldFields->resolveFields(), $isLocalizable);
+                if (!$containerTranslatableFields->isEmpty()) {
+                    $fieldsData->put($field->handle(), collect([
+                        'field' => $field,
+                        'fields' => $containerTranslatableFields,
+                    ]));
+                }
                 continue;
             }
 
@@ -63,18 +70,20 @@ class Translate extends Action
                         if ($replicatorSets->has($setHandle)) {
                             continue;
                         }
-                        $replicatorSets->put($setHandle, $this->getTranslatableFields($setFields->resolveFields()));
+                        $replicatorSets->put($setHandle, $this->getTranslatableFields($setFields->resolveFields(), $isLocalizable));
                     }
                 }
-                $fieldsData->put($field->handle(), collect([
-                    'field' => $field,
-                    'sets' => $replicatorSets,
-                ]));
+                if (!$replicatorSets->isEmpty()) {
+                    $fieldsData->put($field->handle(), collect([
+                        'field' => $field,
+                        'sets' => $replicatorSets,
+                    ]));
+                }
                 continue;
             }
 
             // Handle regular text-based fields that are marked as localizable
-            if ($textFieldTypes->contains($field->type()) && $field->isLocalizable()) {
+            if ($textFieldTypes->contains($field->type()) && $isLocalizable) {
                 $fieldsData->put($field->handle(), collect([
                     'field' => $field,
                 ]));
